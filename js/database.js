@@ -5,8 +5,8 @@ const mysql = require('mysql2/promise');
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: '2018Tacoma*',
-  database: 'rfs_library',
+  password: 'SDET3Password',
+  database: 'rf_smart_library',
   waitForConnections: true,
   connectionLimit: 10,  // Adjust based on your needs
   queueLimit: 0
