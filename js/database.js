@@ -6,7 +6,7 @@ const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'SDET3Password',
-  database: 'rf_smart_library',
+  database: 'rfs_library',
   waitForConnections: true,
   connectionLimit: 10,  // Adjust based on your needs
   queueLimit: 0
