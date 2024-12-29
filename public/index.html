@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RF-SMART Library</title>
+    <link rel="stylesheet" href="css/styles.css"> <!-- External CSS for styling -->
+</head>
+<body>
+    <h1>Employees</h1>
+    <!-- Search form -->
+    <form id="searchForm">
+        <select id="searchBy">
+            <option value="id">ID</option>
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+        </select>
+        <input type="text" id="searchValue" placeholder="Enter search value">
+        <button type="submit">Search</button>
+    </form>
+    <!-- Button to show all employees -->
+    <button id="showAllEmployeesButton">Show All Employees</button>
+    <!-- Table to display employee data -->
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Job Title</th>
+                <th>Department</th> 
+                <th>Hire Date</th>
+                <th>Age</th>
+                <th>Reader</th> 
+                <th>Donor</th> 
+                <th>Pet Type - Pet Name</th>
+                <th>Pet Type - Pet Name</th>
+                <th>Favorite Color</th>
+                <th>Favorite Music</th>
+                <th>Least Favorite Music</th>
+            </tr>
+        </thead>
+        <tbody id="employeeData">
+            <!-- Data rows will be populated here dynamically -->
+        </tbody>
+    </table>
+
+    <div id="results"></div> <!-- Results will be shown here -->
+    
+    <script src="js/script.js"></script> <!-- External JS file for handling logic -->
+</body>
+</html>

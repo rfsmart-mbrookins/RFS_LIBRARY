@@ -1,16 +1,16 @@
 // database.js
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
-// Create a connection pool
+// Create connection pool
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'SDET3Password',
   database: 'rfs_library',
   waitForConnections: true,
-  connectionLimit: 10,  // Adjust based on your needs
+  connectionLimit: 10,  
   queueLimit: 0
 });
 
-// Export the pool
-module.exports = pool;
+// Export pool
+export default pool;

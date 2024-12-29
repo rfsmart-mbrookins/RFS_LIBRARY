@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td {
+    text-align: center;
+}
+
+#searchForm input,
+#searchForm button {
+    padding: 10px;
+    margin: 5px;
+}
+
+#searchForm select {
+    padding: 10px;
+    margin: 5px;
+}
+
+#results {
+    text-align: center;
+    margin-top: 20px;
+}

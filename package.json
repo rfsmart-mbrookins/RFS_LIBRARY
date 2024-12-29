@@ -1,18 +1,20 @@
 {
   "name": "rfs_library",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "RF-SMART Library Repository",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node --watch --env-file=.env server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "mysql": "^2.18.1",
-    "mysql2": "^3.11.5"
+    "mysql2": "^3.12.0"
   }
 }
