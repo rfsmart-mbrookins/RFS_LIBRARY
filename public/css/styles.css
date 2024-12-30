@@ -6,6 +6,9 @@ body {
 h1 {
     text-align: center;
 }
+h2 {
+    text-align: center;
+}
 
 form {
     text-align: center;
@@ -24,7 +27,7 @@ table, th, td {
 
 th, td {
     padding: 8px;
-    text-align: left;
+    text-align: center;
 }
 
 th {

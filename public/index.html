@@ -7,18 +7,22 @@
     <link rel="stylesheet" href="css/styles.css"> <!-- External CSS for styling -->
 </head>
 <body>
-    <h1>Employees</h1>
-    <!-- Search form -->
-    <form id="searchForm">
-        <select id="searchBy">
+    <!-- Title at the top of the page -->
+    <h1>Welcome to the RF-SMART Library</h1>
+
+    <h2>Readers & Donors</h2>
+    <!-- Search form for employees -->
+    <form id="employeeSearchForm">
+        <label for="searchBy">Search by:</label>
+        <select id="searchBy" aria-label="Search by">
             <option value="id">ID</option>
             <option value="first_name">First Name</option>
             <option value="last_name">Last Name</option>
         </select>
-        <input type="text" id="searchValue" placeholder="Enter search value">
+        <input type="text" id="searchValue" placeholder="Enter search value" aria-label="Enter search value">
         <button type="submit">Search</button>
-         <!-- Button to show all employees -->
-    <button id="showAllEmployeesButton">All Employees</button>
+        <!-- Button to show all employees -->
+        <button type="button" id="showAllEmployeesButton" aria-label="Show all employees">All Employees</button>
     </form>
    
     <!-- Table to display employee data -->
@@ -35,8 +39,8 @@
                 <th>Age</th>
                 <th>Reader</th> 
                 <th>Donor</th> 
-                <th>Pet Type - Pet Name</th>
-                <th>Pet Type - Pet Name</th>
+                <th>Pet Information</th>
+                <th>Additional Pet</th>
                 <th>Favorite Color</th>
                 <th>Favorite Music</th>
                 <th>Least Favorite Music</th>
@@ -46,6 +50,73 @@
             <!-- Data rows will be populated here dynamically -->
         </tbody>
     </table>
+
+    <h2>Books</h2>
+    <!-- Search form for books -->
+    <form id="bookSearchForm">
+        <label for="searchByBooks">Search by:</label>
+        <select id="searchByBooks" aria-label="Search by">
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="genre">Genre</option>
+        </select>
+        <input type="text" id="searchValueBooks" placeholder="Enter search value" aria-label="Enter search value">
+        <button type="submit">Search</button>
+        <!-- Button to show all books -->
+        <button type="button" id="showAllBooksButton" aria-label="Show all books">All Books</button>
+    </form>
+
+    <!-- Table to display book data -->
+    <table id="booksTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Status</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody id="booksData">
+            <!-- Data rows will be populated here dynamically -->
+        </tbody>
+    </table>
+
+    <h2>Comments</h2>
+    <!-- Search form for comments -->
+    <form id="commentSearchForm">
+        <label for="searchByComments">Search by:</label>
+        <select id="searchByComments" aria-label="Search by">
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+        </select>
+        <input type="text" id="searchValueComments" placeholder="Enter search value" aria-label="Enter search value">
+        <button type="submit">Search</button>
+        <!-- Button to show all comments -->
+        <button type="button" id="showAllCommentsButton" aria-label="Show all comments">All Comments</button>
+    </form>
+
+    <!-- Table to display comment data -->
+    <table id="commentsTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Reviewed By</th>
+                <th>Review</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="commentsData">
+            <!-- Data rows will be populated here dynamically -->
+        </tbody>
+    </table>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" style="display:none;">
+        <img src="images/loading.gif" alt="Loading..."> <!-- Placeholder for the loading gif -->
+    </div>
 
     <div id="results"></div> <!-- Results will be shown here -->
     
