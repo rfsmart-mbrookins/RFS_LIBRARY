@@ -8,18 +8,20 @@ const sanitizeInput = (input) => {
     return input ? `%${input.trim()}%` : '%';  // Return a wildcard if the input is empty
 };
 
-// Example route for fetching all comments, associated with books and employees
+// Route for fetching all comments, associated with books and employees
 router.get('/', async (req, res) => {
     try {
         const query = `
-            SELECT c.*, b.title AS Title, b.author AS Author, 
-                   CONCAT(e.first_name, ' ', e.last_name) AS Reviewed_By
+            SELECT c.*, 
+                   b.title AS book_title, 
+                   b.author AS book_author,
+                   CONCAT(e.first_name, ' ', e.last_name) AS reviewed_by
             FROM comments c
-            LEFT JOIN books b ON c.book_id = b.id  
-            LEFT JOIN employees e ON c.employee_id = e.id
+            JOIN books b ON c.book_id = b.id
+            JOIN employees e ON c.employee_id = e.id;
         `;
         const [rows] = await pool.execute(query);
-        res.json(rows);  // Return all comments along with book and employee data
+        res.json(rows);  // Return all comments with book and reviewer (employee) data
     } catch (error) {
         console.error('Error fetching comments:', error);
         res.status(500).json({ error: 'Failed to fetch comments from the database' });
@@ -31,12 +33,14 @@ router.get('/search', async (req, res) => {
     const { title, author, reviewer } = req.query;
 
     let query = `
-        SELECT c.*, b.title AS Title, b.author AS Author, 
-               CONCAT(e.first_name, ' ', e.last_name) AS Reviewed_By
+        SELECT c.*, 
+               b.title AS book_title, 
+               b.author AS book_author, 
+               CONCAT(e.first_name, ' ', e.last_name) AS reviewed_by
         FROM comments c
         LEFT JOIN books b ON c.book_id = b.id
         LEFT JOIN employees e ON c.employee_id = e.id
-        WHERE 1=1  
+        WHERE 1=1
     `;
     const queryParams = [];
 
@@ -63,7 +67,13 @@ router.get('/search', async (req, res) => {
     try {
         // Execute the query with parameters
         const [rows] = await pool.execute(query, queryParams);
-        res.json(rows);  // Return search results with book and employee data
+
+        // If no results found
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'No comments found matching the criteria.' });
+        }
+
+        res.json(rows);  // Return search results with book and reviewer data
     } catch (error) {
         console.error('Error searching comments:', error);
         res.status(500).json({ error: 'Failed to search comments in the database' });

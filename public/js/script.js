@@ -66,11 +66,11 @@ const populateCommentsTable = (comments) => {
     tableBody.innerHTML = comments.length ?
         comments.map(comment => `
             <tr>
-                <td>${comment.id}</td> <!-- Title of the book -->
-                <td>${comment.book_id}</td> <!-- Author of the book -->
-                <td>${comment.employee_id}</td> <!-- Employee's full name -->
-                <td>${comment.content}</td> <!-- Review content -->
-                <td>${formatDate(comment.created_at)}</td> <!-- Review date -->
+                <td>${comment.book_title}</td> 
+                <td>${comment.book_author}</td> 
+                <td>${comment.reviewed_by}</td>
+                <td>${comment.content}</td>
+                <td>${formatDate(comment.created_at)}</td>
             </tr>`).join('') :
         '<tr><td colspan="5">No results found.</td></tr>';
 };
