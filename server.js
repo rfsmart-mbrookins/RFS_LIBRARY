@@ -2,8 +2,8 @@
 import express from 'express';
 import employeesRouter from './routes/employees.js';
 import booksRouter from './routes/books.js';
-import commentsRouter from './routes/comments.js'; // Import comments router
-import checkoutsRouter from './routes/checkouts.js'; // Import checkouts router
+import commentsRouter from './routes/comments.js';
+import checkoutsRouter from './routes/checkouts.js'; 
 
 const app = express();
 const port = process.env.PORT || 8000;

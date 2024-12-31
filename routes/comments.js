@@ -1,7 +1,7 @@
-import express from 'express';
-import pool from '../config/database.js'; // Import database connection
+import express from 'express'; // Import express
+import pool from '../config/database.js'; // Import the database connection
 
-const router = express.Router();
+const router = express.Router(); // Initialize the router
 
 // Helper function to sanitize search inputs
 const sanitizeInput = (input) => {
@@ -28,9 +28,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route to search comments by title, author, or reviewer (including book and employee data)
+
 router.get('/search', async (req, res) => {
-    const { title, author, reviewer } = req.query;
+    const { title, author, employee_id, reviewer } = req.query; // Destructure reviewer from req.query
 
     let query = `
         SELECT c.*, 
@@ -57,6 +57,10 @@ router.get('/search', async (req, res) => {
         query += ' AND (e.first_name LIKE ? OR e.last_name LIKE ?)';  // Search for reviewer by first or last name
         const sanitizedReviewer = sanitizeInput(reviewer);
         queryParams.push(sanitizedReviewer, sanitizedReviewer);
+    }
+    if (employee_id) {
+        query += ' AND c.employee_id = ?'; // Search by exact employee ID
+        queryParams.push(employee_id);
     }
 
     // If no search criteria were provided, return a bad request error
