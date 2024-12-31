@@ -4,7 +4,7 @@ const formatDate = (dateString) => {
     const date = new Date(dateString);
 
     // Handle invalid date
-    if (isNaN(date.getTime())) return ''; // Return empty if invalid date
+    if (isNaN(date.getTime())) return ''; 
 
     return `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
 };
@@ -57,7 +57,7 @@ const populateBooksTable = (books) => {
                 <td>${book.status}</td>
                 <td>${book.notes}</td>
             </tr>`).join('') :
-        '<tr><td colspan="6">No books found based on your search criteria.</td></tr>';
+        '<tr><td colspan="14">No books found based on your search criteria.</td></tr>';
 };
 
 // Comments table populator
@@ -72,20 +72,20 @@ const populateCommentsTable = (comments) => {
                 <td>${comment.content}</td>
                 <td>${formatDate(comment.created_at)}</td>
             </tr>`).join('') :
-        '<tr><td colspan="5">No comments found based on your search criteria.</td></tr>';
+        '<tr><td colspan="14">No comments found based on your search criteria.</td></tr>';
 };
 
 // API handlers
 const fetchData = async (url, params = '') => {
     try {
-        setLoadingState(true);  // Show loading
+        setLoadingState(true);  
         const response = await fetch(`${url}${params}`);
         const data = await response.json();
-        setLoadingState(false);  // Hide loading
+        setLoadingState(false); 
         return data;
     } catch (error) {
         console.error('API Error:', error);
-        setLoadingState(false);  // Hide loading
+        setLoadingState(false);  
         document.getElementById('results').innerHTML = '<p>Error occurred. Please retry.</p>';
         throw error;
     }
