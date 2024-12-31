@@ -57,7 +57,7 @@ const populateBooksTable = (books) => {
                 <td>${book.status}</td>
                 <td>${book.notes}</td>
             </tr>`).join('') :
-        '<tr><td colspan="6">No results found.</td></tr>';
+        '<tr><td colspan="6">No books found based on your search criteria.</td></tr>';
 };
 
 // Comments table populator
@@ -72,7 +72,7 @@ const populateCommentsTable = (comments) => {
                 <td>${comment.content}</td>
                 <td>${formatDate(comment.created_at)}</td>
             </tr>`).join('') :
-        '<tr><td colspan="5">No results found.</td></tr>';
+        '<tr><td colspan="5">No comments found based on your search criteria.</td></tr>';
 };
 
 // API handlers
@@ -104,8 +104,8 @@ const setLoadingState = (isLoading) => {
 // Event listeners
 document.getElementById('employeeSearchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const searchBy = document.getElementById('searchBy').value;
-    const searchValue = document.getElementById('searchValue').value.trim();
+    const searchBy = document.getElementById('searchByEmployees').value;
+    const searchValue = document.getElementById('searchValueEmployees').value.trim();
 
     // Validation check
     if (!searchValue) {
@@ -113,7 +113,7 @@ document.getElementById('employeeSearchForm').addEventListener('submit', async (
         return;
     }
 
-    const data = await fetchData('/api/employees/search', `?${searchBy}=${searchValue}`);
+    const data = await fetchData('/api/employees/search', `?${searchByEmployees}=${searchValue}`);
     populateEmployeeTable(data);
 });
 
@@ -126,6 +126,11 @@ document.getElementById('bookSearchForm').addEventListener('submit', async (e) =
     e.preventDefault();
     const searchBy = document.getElementById('searchByBooks').value;
     const searchValue = document.getElementById('searchValueBooks').value.trim();
+        // Validation check
+        if (!searchValue) {
+            alert('Please enter a value to search.');
+            return;
+        }
     const data = await fetchData('/api/books/search', `?${searchBy}=${searchValue}`);
     populateBooksTable(data);
 });
@@ -140,6 +145,11 @@ document.getElementById('commentSearchForm').addEventListener('submit', async (e
     e.preventDefault();
     const searchBy = document.getElementById('searchByComments').value;
     const searchValue = document.getElementById('searchValueComments').value.trim();
+      // Validation check
+      if (!searchValue) {
+        alert('Please enter a value to search.');
+        return;
+    }
     const data = await fetchData('/api/comments/search', `?${searchBy}=${searchValue}`);
     console.log('Comment Data:', data);  // Log data to verify structure
     populateCommentsTable(data);
