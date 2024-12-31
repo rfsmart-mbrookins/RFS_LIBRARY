@@ -1,15 +1,15 @@
-// Date formatter: mm/dd/yyyy
+// Date format
 const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
 
-    // Handle invalid date
+    // invalid date
     if (isNaN(date.getTime())) return ''; 
 
     return `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
 };
 
-// Employee table populator
+// Employee table
 const populateEmployeeTable = (employees) => {
     const tableBody = document.getElementById('employeeData');
     tableBody.innerHTML = '';
@@ -44,7 +44,7 @@ const populateEmployeeTable = (employees) => {
     });
 };
 
-// Books table populator
+// Books table 
 const populateBooksTable = (books) => {
     const tableBody = document.getElementById('booksData');
     tableBody.innerHTML = books.length ?
@@ -60,7 +60,7 @@ const populateBooksTable = (books) => {
         '<tr><td colspan="14">No books found based on your search criteria.</td></tr>';
 };
 
-// Comments table populator
+// Comments table 
 const populateCommentsTable = (comments) => {
     const tableBody = document.getElementById('commentsData');
     tableBody.innerHTML = comments.length ?
@@ -91,7 +91,7 @@ const fetchData = async (url, params = '') => {
     }
 };
 
-// Loading state function
+// Loading 
 const setLoadingState = (isLoading) => {
     const resultsElement = document.getElementById('results');
     if (isLoading) {
@@ -102,26 +102,25 @@ const setLoadingState = (isLoading) => {
 };
 
 // Event listeners
+//employees
 document.getElementById('employeeSearchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const searchBy = document.getElementById('searchByEmployees').value;
     const searchValue = document.getElementById('searchValueEmployees').value.trim();
-
     // Validation check
     if (!searchValue) {
         alert('Please enter a value to search.');
         return;
     }
-
-    const data = await fetchData('/api/employees/search', `?${searchByEmployees}=${searchValue}`);
+    const data = await fetchData('/api/employees/search', `?${searchBy}=${searchValue}`);
     populateEmployeeTable(data);
 });
 
+//books
 document.getElementById('showAllEmployeesButton').addEventListener('click', async () => {
     const data = await fetchData('/api/employees');
     populateEmployeeTable(data);
 });
-
 document.getElementById('bookSearchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const searchBy = document.getElementById('searchByBooks').value;
@@ -134,13 +133,12 @@ document.getElementById('bookSearchForm').addEventListener('submit', async (e) =
     const data = await fetchData('/api/books/search', `?${searchBy}=${searchValue}`);
     populateBooksTable(data);
 });
-
 document.getElementById('showAllBooksButton').addEventListener('click', async () => {
     const data = await fetchData('/api/books');
     populateBooksTable(data);
 });
 
-// Comments event listeners
+// comments
 document.getElementById('commentSearchForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const searchBy = document.getElementById('searchByComments').value;
@@ -151,7 +149,7 @@ document.getElementById('commentSearchForm').addEventListener('submit', async (e
         return;
     }
     const data = await fetchData('/api/comments/search', `?${searchBy}=${searchValue}`);
-    console.log('Comment Data:', data);  // Log data to verify structure
+    console.log('Comment Data:', data);  
     populateCommentsTable(data);
 });
 
@@ -160,3 +158,5 @@ document.getElementById('showAllCommentsButton').addEventListener('click', async
     console.log('All Comments Data:', data);  // Log data to verify structure
     populateCommentsTable(data);
 });
+
+//checkouts

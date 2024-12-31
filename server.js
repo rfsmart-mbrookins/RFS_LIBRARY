@@ -1,4 +1,3 @@
-// server.js
 import express from 'express';
 import employeesRouter from './routes/employees.js';
 import booksRouter from './routes/books.js';
@@ -8,25 +7,25 @@ import checkoutsRouter from './routes/checkouts.js';
 const app = express();
 const port = process.env.PORT || 8000;
 
-// Serve static files (HTML, CSS, JS)
+// static files
 app.use(express.static('public'));
 
-// Middleware for parsing JSON
+// Middleware
 app.use(express.json());
 
-// Use the employees router
+// employees router
 app.use('/api/employees', employeesRouter);
 
-// Use the books router
+// books router
 app.use('/api/books', booksRouter);
 
-// Use the comments router
+// comments router
 app.use('/api/comments', commentsRouter);
 
-// Use the checkouts router
+//  checkouts router
 app.use('/api/checkouts', checkoutsRouter);
 
-// Start the server
+// server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

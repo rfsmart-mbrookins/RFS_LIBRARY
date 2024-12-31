@@ -1,10 +1,9 @@
-// routes/employees.js
 import express from 'express';
-import pool from '../config/database.js'; // Adjust path if necessary
+import pool from '../config/database.js'; 
 
 const router = express.Router();
 
-// Route to get all employees
+// all employees
 router.get('/', async (req, res) => {
     try {
         const [rows] = await pool.execute('SELECT * FROM employees');
@@ -15,24 +14,27 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route to search employees by id, first_name, or last_name
+// search employees by id, first_name, or last_name
 router.get('/search', async (req, res) => {
     const { id, first_name, last_name } = req.query;
-    let query = 'SELECT * FROM employees WHERE';
+    const conditions = [];
     const queryParams = [];
-
     if (id) {
-        query += ' id = ?';
+        conditions.push('id = ?');
         queryParams.push(id);
-    } else if (first_name) {
-        query += ' first_name LIKE ?';
-        queryParams.push(`%${first_name}%`);
-    } else if (last_name) {
-        query += ' last_name LIKE ?';
-        queryParams.push(`%${last_name}%`);
-    } else {
-        return res.status(400).json({ error: 'No search criteria provided.' });
     }
+    if (first_name) {
+        conditions.push('first_name LIKE ?');
+        queryParams.push(`%${first_name}%`);
+    }
+    if (last_name) {
+        conditions.push('last_name LIKE ?');
+        queryParams.push(`%${last_name}%`);
+    }
+
+
+    // query
+    const query = `SELECT * FROM employees WHERE ${conditions.join(' AND ')}`;
 
     try {
         const [rows] = await pool.execute(query, queryParams);

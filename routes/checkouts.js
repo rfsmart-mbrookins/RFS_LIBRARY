@@ -1,9 +1,9 @@
 import express from 'express';
-import pool from '../config/database.js'; // Import database connection
+import pool from '../config/database.js';
 
 const router = express.Router();
 
-// Example route for checkouts
+// route for checkouts
 router.get('/', async (req, res) => {
     try {
         const [rows] = await pool.execute('SELECT * FROM checkouts');

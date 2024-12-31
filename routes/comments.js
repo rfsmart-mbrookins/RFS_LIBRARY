@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 
 
 router.get('/search', async (req, res) => {
-    const { title, author, employee_id, reviewer } = req.query; // Destructure reviewer from req.query
+    const { title, author, employee_id, reviewer } = req.query; 
 
     let query = `
         SELECT c.*, 
@@ -44,40 +44,38 @@ router.get('/search', async (req, res) => {
     `;
     const queryParams = [];
 
-    // Add conditions to the query if the parameters are provided
     if (title) {
-        query += ' AND b.title LIKE ?';  // Search for book title with wildcards
+        query += ' AND b.title LIKE ?';  
         queryParams.push(sanitizeInput(title));
     }
     if (author) {
-        query += ' AND b.author LIKE ?';  // Search for book author with wildcards
+        query += ' AND b.author LIKE ?';  
         queryParams.push(sanitizeInput(author));
     }
     if (reviewer) {
-        query += ' AND (e.first_name LIKE ? OR e.last_name LIKE ?)';  // Search for reviewer by first or last name
+        query += ' AND (e.first_name LIKE ? OR e.last_name LIKE ?)';  
         const sanitizedReviewer = sanitizeInput(reviewer);
         queryParams.push(sanitizedReviewer, sanitizedReviewer);
     }
     if (employee_id) {
-        query += ' AND c.employee_id = ?'; // Search by exact employee ID
+        query += ' AND c.employee_id = ?';
         queryParams.push(employee_id);
     }
 
-    // If no search criteria were provided, return a bad request error
+    // no search criteria
     if (queryParams.length === 0) {
         return res.status(400).json({ error: 'No search criteria provided.' });
     }
 
     try {
-        // Execute the query with parameters
         const [rows] = await pool.execute(query, queryParams);
 
-        // If no results found
+        //no results found
         if (rows.length === 0) {
             return res.status(404).json({ message: 'No comments found matching the criteria.' });
         }
 
-        res.json(rows);  // Return search results with book and reviewer data
+        res.json(rows);  
     } catch (error) {
         console.error('Error searching comments:', error);
         res.status(500).json({ error: 'Failed to search comments in the database' });
