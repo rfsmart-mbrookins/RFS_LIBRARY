@@ -109,7 +109,7 @@ document.getElementById('employeeSearchForm').addEventListener('submit', async (
     const searchValue = document.getElementById('searchValueEmployees').value.trim();
     // Validation check
     if (!searchValue) {
-        alert('Please enter a value to search.');
+        alert('Please enter a value to search Readers & Donors.');
         return;
     }
     const data = await fetchData('/api/employees/search', `?${searchBy}=${searchValue}`);
@@ -127,7 +127,7 @@ document.getElementById('bookSearchForm').addEventListener('submit', async (e) =
     const searchValue = document.getElementById('searchValueBooks').value.trim();
         // Validation check
         if (!searchValue) {
-            alert('Please enter a value to search.');
+            alert('Please enter a value to search Books.');
             return;
         }
     const data = await fetchData('/api/books/search', `?${searchBy}=${searchValue}`);
@@ -145,7 +145,7 @@ document.getElementById('commentSearchForm').addEventListener('submit', async (e
     const searchValue = document.getElementById('searchValueComments').value.trim();
       // Validation check
       if (!searchValue) {
-        alert('Please enter a value to search.');
+        alert('Please enter a value to search Comments.');
         return;
     }
     const data = await fetchData('/api/comments/search', `?${searchBy}=${searchValue}`);
