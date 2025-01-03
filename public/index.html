@@ -117,6 +117,36 @@
         </tbody>
     </table>
 
+    <h2>Checkouts</h2>
+    <!-- Search form for checkouts -->
+    <form id="checkoutSearchForm">
+        <label for="searchByCheckouts">Search by:</label>
+        <select id="searchByCheckouts" aria-label="Search by">
+            <option value="title">Title</option>
+            <option value="reader">Checked Out By</option>
+        </select>
+        <input type="text" id="searchValueCheckouts" placeholder="Enter search value" aria-label="Enter search value">
+        <button type="submit">Search</button>
+        <!-- Button to show all checkouts -->
+        <button type="button" id="showAllCheckouts" aria-label="Show all checkouts">All Checkouts</button>
+        <button type="button" id="addCheckout" aria-label="Add Checkout">Add Checkout</button>
+    </form>
+
+    <!-- Table to display comment data -->
+    <table id="checkoutsTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Reader</th>
+                <th>Checkout Date</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody id="checkoutsData">
+            <!-- Data rows will be populated here dynamically -->
+        </tbody>
+    </table>
+
     <!-- Loading Spinner -->
     <div id="loadingSpinner" style="display:none;">
         <img src="images/loading.gif" alt="Loading..."> <!-- Placeholder for the loading gif -->

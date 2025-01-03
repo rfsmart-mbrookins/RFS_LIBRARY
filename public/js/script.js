@@ -1,162 +1,126 @@
-// Date format
+// Utility functions
 const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-
-    // invalid date
-    if (isNaN(date.getTime())) return ''; 
-
-    return `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
+    return isNaN(date.getTime()) ? '' : `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
 };
 
-// Employee table
-const populateEmployeeTable = (employees) => {
-    const tableBody = document.getElementById('employeeData');
-    tableBody.innerHTML = '';
-
-    if (!employees.length) {
-        tableBody.innerHTML = '<tr><td colspan="14">No employees found based on your search criteria.</td></tr>';
-        return;
-    }
-
-    employees.forEach(emp => {
-        const pet1 = [emp.pet_type_1, emp.pet_name_1].filter(Boolean).join(' - ');
-        const pet2 = [emp.pet_type_2, emp.pet_name_2].filter(Boolean).join(' - ');
-
-        tableBody.innerHTML += `
-            <tr>
-                <td>${emp.id}</td>
-                <td>${emp.first_name}</td>
-                <td>${emp.last_name}</td>
-                <td>${emp.email}</td>
-                <td>${emp.job_title}</td>
-                <td>${emp.department}</td>
-                <td>${formatDate(emp.hire_date)}</td>
-                <td>${emp.age}</td>
-                <td>${emp.is_reader ? 'Yes' : 'No'}</td>
-                <td>${emp.is_donor ? 'Yes' : 'No'}</td>
-                <td>${pet1}</td>
-                <td>${pet2}</td>
-                <td>${emp.fav_color ?? ''}</td>
-                <td>${emp.fav_music ?? ''}</td>
-                <td>${emp.less_fav_music ?? ''}</td>
-            </tr>`;
-    });
+const setLoadingState = (isLoading) => {
+    const resultsElement = document.getElementById('results');
+    resultsElement.innerHTML = isLoading ? '<p>Loading...</p>' : '';
 };
 
-// Books table 
-const populateBooksTable = (books) => {
-    const tableBody = document.getElementById('booksData');
-    tableBody.innerHTML = books.length ?
-        books.map(book => `
-            <tr>
-                <td>${book.id}</td>
-                <td>${book.title}</td>
-                <td>${book.author}</td>
-                <td>${book.genre}</td>
-                <td>${book.status}</td>
-                <td>${book.notes}</td>
-            </tr>`).join('') :
-        '<tr><td colspan="14">No books found based on your search criteria.</td></tr>';
-};
-
-// Comments table 
-const populateCommentsTable = (comments) => {
-    const tableBody = document.getElementById('commentsData');
-    tableBody.innerHTML = comments.length ?
-        comments.map(comment => `
-            <tr>
-                <td>${comment.book_title}</td> 
-                <td>${comment.book_author}</td> 
-                <td>${comment.reviewed_by}</td>
-                <td>${comment.content}</td>
-                <td>${formatDate(comment.created_at)}</td>
-            </tr>`).join('') :
-        '<tr><td colspan="14">No comments found based on your search criteria.</td></tr>';
-};
-
-// API handlers
 const fetchData = async (url, params = '') => {
     try {
-        setLoadingState(true);  
+        setLoadingState(true);
         const response = await fetch(`${url}${params}`);
         const data = await response.json();
-        setLoadingState(false); 
         return data;
     } catch (error) {
         console.error('API Error:', error);
-        setLoadingState(false);  
         document.getElementById('results').innerHTML = '<p>Error occurred. Please retry.</p>';
         throw error;
+    } finally {
+        setLoadingState(false);
     }
 };
 
-// Loading 
-const setLoadingState = (isLoading) => {
-    const resultsElement = document.getElementById('results');
-    if (isLoading) {
-        resultsElement.innerHTML = '<p>Loading...</p>';
-    } else {
-        resultsElement.innerHTML = '';
-    }
+// Reusable table population function
+const populateTable = (tableId, data, columns, noDataMessage) => {
+    const tableBody = document.getElementById(tableId);
+    tableBody.innerHTML = data.length
+        ? data.map(item => `
+            <tr>
+                ${columns.map(col => `<td>${col(item)}</td>`).join('')}
+            </tr>`).join('')
+        : `<tr><td colspan="${columns.length}">${noDataMessage}</td></tr>`;
 };
 
-// Event listeners
-//employees
-document.getElementById('employeeSearchForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const searchBy = document.getElementById('searchByEmployees').value;
-    const searchValue = document.getElementById('searchValueEmployees').value.trim();
-    // Validation check
-    if (!searchValue) {
-        alert('Please enter a value to search Readers & Donors.');
-        return;
-    }
-    const data = await fetchData('/api/employees/search', `?${searchBy}=${searchValue}`);
-    populateEmployeeTable(data);
-});
+// Table-specific population functions
+const populateEmployeeTable = (employees) => {
+    populateTable('employeeData', employees, [
+        emp => emp.id,
+        emp => emp.first_name,
+        emp => emp.last_name,
+        emp => emp.email,
+        emp => emp.job_title,
+        emp => emp.department,
+        emp => formatDate(emp.hire_date),
+        emp => emp.age,
+        emp => emp.is_reader ? 'Yes' : 'No',
+        emp => emp.is_donor ? 'Yes' : 'No',
+        emp => [emp.pet_type_1, emp.pet_name_1].filter(Boolean).join(' - '),
+        emp => [emp.pet_type_2, emp.pet_name_2].filter(Boolean).join(' - '),
+        emp => emp.fav_color ?? '',
+        emp => emp.fav_music ?? '',
+        emp => emp.less_fav_music ?? ''
+    ], 'No employees found based on your search criteria.');
+};
 
-//books
-document.getElementById('showAllEmployeesButton').addEventListener('click', async () => {
-    const data = await fetchData('/api/employees');
-    populateEmployeeTable(data);
-});
-document.getElementById('bookSearchForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const searchBy = document.getElementById('searchByBooks').value;
-    const searchValue = document.getElementById('searchValueBooks').value.trim();
-        // Validation check
+const populateBooksTable = (books) => {
+    populateTable('booksData', books, [
+        book => book.id,
+        book => book.title,
+        book => book.author,
+        book => book.genre,
+        book => book.status,
+        book => book.notes
+    ], 'No books found based on your search criteria.');
+};
+
+const populateCommentsTable = (comments) => {
+    populateTable('commentsData', comments, [
+        comment => comment.book_title,
+        comment => comment.book_author,
+        comment => comment.reviewed_by,
+        comment => comment.content,
+        comment => formatDate(comment.created_at)
+    ], 'No comments found based on your search criteria.');
+};
+
+const populateCheckoutsTable = (checkouts) => {
+    populateTable('checkoutsData', checkouts, [
+        checkout => checkout.book_title,
+        checkout => checkout.reader,
+        checkout => formatDate(checkout.checkout_date),
+        checkout => formatDate(checkout.due_date)
+    ], 'No checkouts found based on your search criteria.');
+};
+
+// Reusable search form handler
+const setupSearchForm = (formId, apiUrl, populateFn) => {
+    document.getElementById(formId).addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const searchBy = document.querySelector(`#${formId} select`).value;
+        const searchValue = document.querySelector(`#${formId} input`).value.trim();
+
         if (!searchValue) {
-            alert('Please enter a value to search Books.');
+            alert('Please enter a value to search.');
             return;
         }
-    const data = await fetchData('/api/books/search', `?${searchBy}=${searchValue}`);
-    populateBooksTable(data);
-});
-document.getElementById('showAllBooksButton').addEventListener('click', async () => {
-    const data = await fetchData('/api/books');
-    populateBooksTable(data);
-});
 
-// comments
-document.getElementById('commentSearchForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const searchBy = document.getElementById('searchByComments').value;
-    const searchValue = document.getElementById('searchValueComments').value.trim();
-      // Validation check
-      if (!searchValue) {
-        alert('Please enter a value to search Comments.');
-        return;
-    }
-    const data = await fetchData('/api/comments/search', `?${searchBy}=${searchValue}`);
-    console.log('Comment Data:', data);  
-    populateCommentsTable(data);
-});
+        const data = await fetchData(apiUrl, `?${searchBy}=${searchValue}`);
+        populateFn(data);
+    });
+};
 
-document.getElementById('showAllCommentsButton').addEventListener('click', async () => {
-    const data = await fetchData('/api/comments');
-    console.log('All Comments Data:', data);  // Log data to verify structure
-    populateCommentsTable(data);
-});
+// Reusable show-all button handler
+const setupShowAllButton = (buttonId, apiUrl, populateFn) => {
+    document.getElementById(buttonId).addEventListener('click', async () => {
+        const data = await fetchData(apiUrl);
+        populateFn(data);
+    });
+};
 
-//checkouts
+// Setup event listeners
+setupSearchForm('employeeSearchForm', '/api/employees/search', populateEmployeeTable);
+setupShowAllButton('showAllEmployeesButton', '/api/employees', populateEmployeeTable);
+
+setupSearchForm('bookSearchForm', '/api/books/search', populateBooksTable);
+setupShowAllButton('showAllBooksButton', '/api/books', populateBooksTable);
+
+setupSearchForm('commentSearchForm', '/api/comments/search', populateCommentsTable);
+setupShowAllButton('showAllCommentsButton', '/api/comments', populateCommentsTable);
+
+setupSearchForm('checkoutSearchForm', '/api/checkouts/search', populateCheckoutsTable);
+setupShowAllButton('showAllCheckouts', '/api/checkouts', populateCheckoutsTable);

@@ -5,7 +5,7 @@ const router = express.Router();
 
 // sanitize inputs
 const sanitizeInput = (input) => {
-    return input ? `%${input.trim()}%` : '%';  // Return a wildcard if the input is empty
+    return input ? `%${input.trim()}%` : '%';  
 };
 
 // all comments, associated with books and employees
