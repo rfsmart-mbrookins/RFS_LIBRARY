@@ -3,12 +3,12 @@ import pool from '../config/database.js';
 
 const router = express.Router(); 
 
-// sanitize inputs
+// Helper function to sanitize inputs
 const sanitizeInput = (input) => {
     return input ? `%${input.trim()}%` : '%';  
 };
 
-// all comments, associated with books and employees
+// Fetch all comments associated with books and employees
 router.get('/', async (req, res) => {
     try {
         const query = `
@@ -28,9 +28,14 @@ router.get('/', async (req, res) => {
     }
 });
 
-
+// Search comments with filters
 router.get('/search', async (req, res) => {
     const { title, author, employee_id, reviewer } = req.query; 
+    
+    if (!title && !author && !employee_id && !reviewer) {
+        return res.status(400).json({ error: 'No search criteria provided.' });
+    }
+
     let query = `
         SELECT c.*, 
                b.title AS book_title, 
@@ -42,6 +47,7 @@ router.get('/search', async (req, res) => {
         WHERE 1=1
     `;
     const queryParams = [];
+
     if (title) {
         query += ' AND b.title LIKE ?';  
         queryParams.push(sanitizeInput(title));
@@ -59,13 +65,10 @@ router.get('/search', async (req, res) => {
         query += ' AND c.employee_id = ?';
         queryParams.push(employee_id);
     }
-    // no search criteria
-    if (queryParams.length === 0) {
-        return res.status(400).json({ error: 'No search criteria provided.' });
-    }
+
     try {
         const [rows] = await pool.execute(query, queryParams);
-    //no results found
+
         if (rows.length === 0) {
             return res.status(404).json({ message: 'No comments found matching the criteria.' });
         }
