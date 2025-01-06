@@ -52,4 +52,28 @@ router.get('/search', async (req, res) => {
     }
 });
 
+// Add a new book
+router.post('/', async (req, res) => {
+    const { title, author, genre, status, notes } = req.body;
+
+    if (!title || !author || !genre || !status) {
+        return res.status(400).json({ error: 'Title, author, genre, and status are required.' });
+    }
+
+    try {
+        // Insert new book into the database
+        const [result] = await pool.execute(
+            'INSERT INTO books (title, author, genre, status, notes) VALUES (?, ?, ?, ?, ?)', 
+            [title.trim(), author.trim(), genre.trim(), status, notes ? notes.trim() : null]
+        );
+
+        // Return the newly created book with ID
+        const newBook = { id: result.insertId, title, author, genre, status, notes };
+        res.status(201).json(newBook);
+    } catch (error) {
+        console.error('Error adding book:', error);
+        res.status(500).json({ error: 'Failed to add the book to the database' });
+    }
+});
+
 export default router;

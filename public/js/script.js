@@ -25,7 +25,9 @@ const fetchData = async (url, params = '') => {
     }
 };
 
-// Reusable table population function
+// Table-specific population functions
+const createColumnFunctions = (columns) => columns.map(col => item => col(item));
+
 const populateTable = (tableId, data, columns, noDataMessage) => {
     const tableBody = document.getElementById(tableId);
     tableBody.innerHTML = data.length
@@ -36,9 +38,9 @@ const populateTable = (tableId, data, columns, noDataMessage) => {
         : `<tr><td colspan="${columns.length}">${noDataMessage}</td></tr>`;
 };
 
-// Table-specific population functions
+// Table population functions
 const populateEmployeeTable = (employees) => {
-    populateTable('employeeData', employees, [
+    const columns = createColumnFunctions([
         emp => emp.id,
         emp => emp.first_name,
         emp => emp.last_name,
@@ -55,37 +57,41 @@ const populateEmployeeTable = (employees) => {
         emp => emp.fav_color ?? '',
         emp => emp.fav_music ?? '',
         emp => emp.less_fav_music ?? ''
-    ], 'No employees found based on your search criteria.');
+    ]);
+    populateTable('employeeData', employees, columns, 'No employees found based on your search criteria.');
 };
 
 const populateBooksTable = (books) => {
-    populateTable('booksData', books, [
+    const columns = createColumnFunctions([
         book => book.id,
         book => book.title,
         book => book.author,
         book => book.genre,
         book => book.status,
         book => book.notes
-    ], 'No books found based on your search criteria.');
+    ]);
+    populateTable('booksData', books, columns, 'No books found based on your search criteria.');
 };
 
 const populateCommentsTable = (comments) => {
-    populateTable('commentsData', comments, [
+    const columns = createColumnFunctions([
         comment => comment.book_title,
         comment => comment.book_author,
         comment => comment.reviewed_by,
         comment => comment.content,
         comment => formatDate(comment.created_at)
-    ], 'No comments found based on your search criteria.');
+    ]);
+    populateTable('commentsData', comments, columns, 'No comments found based on your search criteria.');
 };
 
 const populateCheckoutsTable = (checkouts) => {
-    populateTable('checkoutsData', checkouts, [
+    const columns = createColumnFunctions([
         checkout => checkout.book_title,
         checkout => checkout.reader,
         checkout => formatDate(checkout.checkout_date),
         checkout => formatDate(checkout.due_date)
-    ], 'No checkouts found based on your search criteria.');
+    ]);
+    populateTable('checkoutsData', checkouts, columns, 'No checkouts found based on your search criteria.');
 };
 
 // Reusable search form handler
@@ -113,15 +119,78 @@ const setupShowAllButton = (buttonId, apiUrl, populateFn) => {
     });
 };
 
-// Setup event listeners
-setupSearchForm('employeeSearchForm', '/api/employees/search', populateEmployeeTable);
-setupShowAllButton('showAllEmployeesButton', '/api/employees', populateEmployeeTable);
+// Add Book Form Handling
+const showAddBookForm = () => {
+    document.getElementById('add-book-section').style.display = 'block';
+};
 
-setupSearchForm('bookSearchForm', '/api/books/search', populateBooksTable);
-setupShowAllButton('showAllBooksButton', '/api/books', populateBooksTable);
+const hideAddBookForm = () => {
+    document.getElementById('add-book-section').style.display = 'none';
+};
 
-setupSearchForm('commentSearchForm', '/api/comments/search', populateCommentsTable);
-setupShowAllButton('showAllCommentsButton', '/api/comments', populateCommentsTable);
+const handleAddBookSubmit = async (e) => {
+    e.preventDefault();
 
-setupSearchForm('checkoutSearchForm', '/api/checkouts/search', populateCheckoutsTable);
-setupShowAllButton('showAllCheckouts', '/api/checkouts', populateCheckoutsTable);
+    const title = document.getElementById('bookTitle').value;
+    const author = document.getElementById('bookAuthor').value;
+    const genre = document.getElementById('bookGenre').value;
+    const status = document.getElementById('bookStatus').value;
+    const notes = document.getElementById('bookNotes').value;
+
+    const newBook = {
+        title,
+        author,
+        genre,
+        status,
+        notes: notes.trim() || null  // Optional notes
+    };
+
+    try {
+        const response = await fetch('/api/books', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        });
+
+        if (response.ok) {
+            alert('Book added successfully!');
+            hideAddBookForm();
+            const newBookData = await response.json();
+            populateBooksTable([newBookData]); // Add the new book to the table
+        } else {
+            alert('Failed to add book.');
+        }
+    } catch (error) {
+        console.error('Error adding book:', error);
+        alert('An error occurred while adding the book.');
+    }
+};
+
+// Setup event listeners for adding book
+const setupAddBookEventListeners = () => {
+    document.getElementById('addBook').addEventListener('click', showAddBookForm);
+    document.getElementById('cancelAddBook').addEventListener('click', hideAddBookForm);
+    document.getElementById('addBookForm').addEventListener('submit', handleAddBookSubmit);
+};
+
+// Initialize the setup
+const setupEventListeners = () => {
+    setupSearchForm('employeeSearchForm', '/api/employees/search', populateEmployeeTable);
+    setupShowAllButton('showAllEmployeesButton', '/api/employees', populateEmployeeTable);
+
+    setupSearchForm('bookSearchForm', '/api/books/search', populateBooksTable);
+    setupShowAllButton('showAllBooksButton', '/api/books', populateBooksTable);
+
+    setupSearchForm('commentSearchForm', '/api/comments/search', populateCommentsTable);
+    setupShowAllButton('showAllCommentsButton', '/api/comments', populateCommentsTable);
+
+    setupSearchForm('checkoutSearchForm', '/api/checkouts/search', populateCheckoutsTable);
+    setupShowAllButton('showAllCheckouts', '/api/checkouts', populateCheckoutsTable);
+
+    setupAddBookEventListeners(); // Add event listeners for the Add Book functionality
+};
+
+// Initialize all event listeners
+setupEventListeners();
