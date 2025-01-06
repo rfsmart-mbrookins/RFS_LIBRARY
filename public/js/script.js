@@ -47,6 +47,7 @@ const populateEmployeeTable = (employees) => {
         emp => emp.department,
         emp => formatDate(emp.hire_date),
         emp => emp.age,
+        emp => emp.is_rf_smart_employee ? 'Active' : 'Inactive',
         emp => emp.is_reader ? 'Yes' : 'No',
         emp => emp.is_donor ? 'Yes' : 'No',
         emp => [emp.pet_type_1, emp.pet_name_1].filter(Boolean).join(' - '),
