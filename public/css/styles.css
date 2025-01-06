@@ -1,55 +1,207 @@
+/* General Body Styling */
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    padding: 30px;
+    margin: 0;
+    color: #333;
+}
+
+/* Header Styling */
+h1, h2 {
+    text-align: center;
+    color: #333;
+    font-weight: 600;
 }
 
 h1 {
-    text-align: center;
-}
-h2 {
-    text-align: center;
-}
-
-form {
-    text-align: center;
+    font-size: 2.5em;
     margin-bottom: 20px;
 }
 
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+form input,
+form select,
+form button {
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 80%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+form input,
+form select {
+    background-color: #fafafa;
+}
+
+/* Button Styling */
+
+/* Default Button (Neutral color for general actions) */
+form button.default {
+    background-color: #4CAF50;
+    color: white;
+}
+
+form button.default:hover {
+    background-color: #45a049;
+}
+
+/* Search Button Styling (Blue for Search Actions) */
+form button.search {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 80%;
+    max-width: 300px;
+    box-sizing: border-box;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+form button.search:hover {
+    background-color: #0056b3;
+}
+
+/* Add Button (Green for Add Actions) */
+form button.add {
+    background-color: #28a745;
+    color: white;
+}
+
+form button.add:hover {
+    background-color: #218838;
+}
+
+/* Cancel Button (Red for Cancel Actions) */
+form button.cancel {
+    background-color: #dc3545;
+    color: white;
+}
+
+form button.cancel:hover {
+    background-color: #c82333;
+}
+
+/* All Buttons (For the 'Show All' type) */
+form button.all {
+    background-color: #6c757d;
+    color: white;
+}
+
+form button.all:hover {
+    background-color: #5a6268;
+}
+
+/* Table Styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 40px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: 1px solid #ddd;
 }
 
 th, td {
-    padding: 8px;
+    padding: 12px;
     text-align: center;
 }
 
 th {
     background-color: #f2f2f2;
+    font-weight: bold;
+    color: #555;
 }
 
 td {
-    text-align: center;
+    font-size: 0.95em;
+    color: #444;
 }
 
-#searchForm input,
-#searchForm button {
-    padding: 10px;
-    margin: 5px;
+td:hover {
+    background-color: #f9f9f9;
 }
 
-#searchForm select {
-    padding: 10px;
-    margin: 5px;
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
 }
 
+tr:nth-child(odd) td {
+    background-color: #fff;
+}
+
+/* Results Section */
 #results {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
+    font-size: 1.2em;
+    color: #444;
+}
+
+/* Loading Spinner */
+#loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+#loadingSpinner img {
+    width: 50px;
+    height: 50px;
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 768px) {
+    form input,
+    form select,
+    form button {
+        width: 100%;
+    }
+
+    table, th, td {
+        font-size: 0.85em;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
 }
