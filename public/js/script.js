@@ -61,17 +61,62 @@ const populateEmployeeTable = (employees) => {
     populateTable('employeeData', employees, columns, 'No employees found based on your search criteria.');
 };
 
+// Function to handle check-out/return button clicks
+const handleBookStatusChange = async (bookId, currentStatus) => {
+    const newStatus = currentStatus === 'Available' ? 'Checked Out' : 'Available';
+
+    try {
+        const response = await fetch(`/api/books/${bookId}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus }),
+        });
+
+        if (response.ok) {
+            alert(`Book status updated to "${newStatus}"`);
+            const updatedBook = await response.json();
+            updateBookRow(updatedBook); // Update the specific row in the table
+        } else {
+            alert('Failed to update book status.');
+        }
+    } catch (error) {
+        console.error('Error updating book status:', error);
+        alert('An error occurred while updating the book status.');
+    }
+};
+
+// Update a single book row in the table
+const updateBookRow = (book) => {
+    const tableRows = document.querySelectorAll('#booksData tr');
+    tableRows.forEach((row) => {
+        const bookIdCell = row.querySelector('td:first-child');
+        if (bookIdCell && bookIdCell.textContent == book.id) {
+            row.querySelector('td:nth-child(5)').textContent = book.status; // Update status column
+            const button = row.querySelector('button');
+            button.textContent = book.status === 'Available' ? 'Check Out' : 'Return';
+        }
+    });
+};
+
+// Modify the populateBooksTable to include the button
 const populateBooksTable = (books) => {
     const columns = createColumnFunctions([
-        book => book.id,
-        book => book.title,
-        book => book.author,
-        book => book.genre,
-        book => book.status,
-        book => book.notes ?? ''
+        (book) => book.id,
+        (book) => book.title,
+        (book) => book.author,
+        (book) => book.genre,
+        (book) => book.status,
+        (book) => book.notes ?? '',
+        (book) =>
+            `<button onclick="handleBookStatusChange(${book.id}, '${book.status}')">${
+                book.status === 'Available' ? 'Check Out' : 'Return'
+            }</button>`, // Add Check Out/Return button
     ]);
     populateTable('booksData', books, columns, 'No books found based on your search criteria.');
 };
+
 
 const populateCommentsTable = (comments) => {
     const columns = createColumnFunctions([

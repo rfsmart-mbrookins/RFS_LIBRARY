@@ -76,4 +76,29 @@ router.post('/', async (req, res) => {
     }
 });
 
+// Update book status (Check Out / Return)
+router.patch('/:id/status', async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!['Available', 'Checked Out'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid status value.' });
+    }
+
+    try {
+        const [result] = await pool.execute('UPDATE books SET status = ? WHERE id = ?', [status, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Book not found.' });
+        }
+
+        // Fetch the updated book to return in the response
+        const [updatedBook] = await pool.execute('SELECT * FROM books WHERE id = ?', [id]);
+        res.json(updatedBook[0]); // Return updated book
+    } catch (error) {
+        console.error('Error updating book status:', error);
+        res.status(500).json({ error: 'Failed to update the book status.' });
+    }
+});
+
 export default router;
