@@ -68,7 +68,7 @@ const populateBooksTable = (books) => {
         book => book.author,
         book => book.genre,
         book => book.status,
-        book => book.notes
+        book => book.notes ?? ''
     ]);
     populateTable('booksData', books, columns, 'No books found based on your search criteria.');
 };
