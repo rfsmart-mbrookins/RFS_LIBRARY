@@ -63,9 +63,9 @@ const populateEmployeeTable = (employees) => {
 
 // Function to handle check-out/return button clicks
 const handleBookStatusChange = async (bookId, currentStatus) => {
-    const newStatus = currentStatus === 'Available' ? 'Checked Out' : 'Available';
-
     try {
+        const newStatus = currentStatus === 'Available' ? 'Checked Out' : 'Available';
+
         const response = await fetch(`/api/books/${bookId}/status`, {
             method: 'PATCH',
             headers: {
@@ -74,16 +74,25 @@ const handleBookStatusChange = async (bookId, currentStatus) => {
             body: JSON.stringify({ status: newStatus }),
         });
 
-        if (response.ok) {
-            alert(`Book status updated to "${newStatus}"`);
-            const updatedBook = await response.json();
-            updateBookRow(updatedBook); // Update the specific row in the table
-        } else {
-            alert('Failed to update book status.');
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to update book status');
         }
+
+        const updatedBook = await response.json();
+
+        // Update the row and the button label in the UI
+        updateBookRow(updatedBook);
+
+        // Display success message
+        const results = document.getElementById('results');
+        results.innerHTML = `<p class="success">Book status updated to "${newStatus}"</p>`;
+        setTimeout(() => {
+            results.innerHTML = '';
+        }, 3000);
     } catch (error) {
         console.error('Error updating book status:', error);
-        alert('An error occurred while updating the book status.');
+        document.getElementById('results').innerHTML = `<p class="error">${error.message}</p>`;
     }
 };
 
@@ -93,9 +102,13 @@ const updateBookRow = (book) => {
     tableRows.forEach((row) => {
         const bookIdCell = row.querySelector('td:first-child');
         if (bookIdCell && bookIdCell.textContent == book.id) {
-            row.querySelector('td:nth-child(5)').textContent = book.status; // Update status column
+            // Update the status cell
+            row.querySelector('td:nth-child(5)').textContent = book.status;
+
+            // Update the button text and data-status attribute
             const button = row.querySelector('button');
             button.textContent = book.status === 'Available' ? 'Check Out' : 'Return';
+            button.dataset.status = book.status;
         }
     });
 };
@@ -110,13 +123,21 @@ const populateBooksTable = (books) => {
         (book) => book.status,
         (book) => book.notes ?? '',
         (book) =>
-            `<button onclick="handleBookStatusChange(${book.id}, '${book.status}')">${
-                book.status === 'Available' ? 'Check Out' : 'Return'
-            }</button>`, // Add Check Out/Return button
+            `<button data-book-id="${book.id}" data-status="${book.status}">
+                ${book.status === 'Available' ? 'Check Out' : 'Return'}
+            </button>`, // Add Check Out/Return button
     ]);
     populateTable('booksData', books, columns, 'No books found based on your search criteria.');
 };
 
+// Listener for dynamically created buttons in the books table
+document.getElementById('booksData').addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+        const bookId = e.target.dataset.bookId;
+        const currentStatus = e.target.dataset.status;
+        handleBookStatusChange(bookId, currentStatus);
+    }
+});
 
 const populateCommentsTable = (comments) => {
     const columns = createColumnFunctions([
