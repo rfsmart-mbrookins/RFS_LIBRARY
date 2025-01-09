@@ -61,6 +61,58 @@
             </table>
         </section>
 
+        <!-- Add New Employee Section -->
+        <section id="add-employee-section" style="display: none;">
+            <h2>Add New Employee</h2>
+            <form id="addEmployeeForm">
+                <label for="employeeFirstName">First Name:</label>
+                <input type="text" id="employeeFirstName" required placeholder="Enter first name">
+                <label for="employeeLastName">Last Name:</label>
+                <input type="text" id="employeeLastName" required placeholder="Enter last name">
+                <label for="employeeEmail">Email:</label>
+                <input type="email" id="employeeEmail" required placeholder="Enter email address">
+                <label for="employeeJobTitle">Job Title:</label>
+                <input type="text" id="employeeJobTitle" required placeholder="Enter job title">
+                <label for="employeeDepartment">Department:</label>
+                <input type="text" id="employeeDepartment" placeholder="Enter department">
+                <label for="hireDate">Hire Date:</label>
+                <input type="date" id="hireDate" placeholder="Enter hire date">
+                <label for="age">Age:</label>
+                <input type="int" id="age" placeholder="Enter age">
+                <label for="employeeRFSmartStatus">Active RF-SMART Employee:</label>
+                <select id="employeeRFSmartStatus">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+                <label for="employeeIsReader">Is a Reader:</label>
+                <select id="employeeIsReader">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+                <label for="employeeIsDonor">Is a Donor:</label>
+                <select id="employeeIsDonor">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+                <label for="employeePetType1">Pet Type (1):</label>
+                <input type="text" id="employeePetType1" placeholder="Enter first pet type (optional)">
+                <label for="employeePetName1">Pet Name (1):</label>
+                <input type="text" id="employeePetName1" placeholder="Enter first pet name (optional)">
+                <label for="employeePetType2">Pet Type (2):</label>
+                <input type="text" id="employeePetType2" placeholder="Enter second pet type (optional)">
+                <label for="employeePetName2">Pet Name (2):</label>
+                <input type="text" id="employeePetName2" placeholder="Enter second pet name (optional)">
+                <label for="employeeFavColor">Favorite Color:</label>
+                <input type="text" id="employeeFavColor" placeholder="Enter favorite color (optional)">
+                <label for="employeeFavMusic">Favorite Music:</label>
+                <input type="text" id="employeeFavMusic" placeholder="Enter favorite music (optional)">
+                <label for="employeeLessFavMusic">Least Favorite Music:</label>
+                <input type="text" id="employeeLessFavMusic" placeholder="Enter least favorite music (optional)">
+                <button type="submit" class="add">Submit</button>
+                <button type="button" id="cancelAddEmployee" class="cancel" aria-label="Cancel">Cancel</button>
+            </form>
+        </section>
+
         <!-- Books Section -->
         <section id="books-section">
             <h2>Books</h2>

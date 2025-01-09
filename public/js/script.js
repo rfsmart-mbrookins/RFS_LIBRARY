@@ -61,6 +61,62 @@ const populateEmployeeTable = (employees) => {
     populateTable('employeeData', employees, columns, 'No employees found based on your search criteria.');
 };
 
+// Show/hide Add Reader/Donor form
+const showAddEmployeeForm = () => {
+    document.getElementById('add-employee-section').style.display = 'block';
+};
+
+const hideAddEmployeeForm = () => {
+    document.getElementById('add-employee-section').style.display = 'none';
+};
+
+// Handle Add Reader/Donor form submission
+const handleAddEmployeeSubmit = async (e) => {
+    e.preventDefault();
+
+    const newEmployee = {
+        first_name: document.getElementById('employeeFirstName').value,
+        last_name: document.getElementById('employeeLastName').value,
+        email: document.getElementById('employeeEmail').value,
+        job_title: document.getElementById('employeeJobTitle').value,
+        department: document.getElementById('employeeDepartment').value,
+        hire_date: document.getElementById('hireDate').value,
+        age: document.getElementById('age').value,
+        is_rf_smart_employee: document.getElementById('employeeRFSmartStatus').value === 'true',
+        is_reader: document.getElementById('employeeIsReader').value === 'true',
+        is_donor: document.getElementById('employeeIsDonor').value === 'true',
+        pet_type_1: document.getElementById('employeePetType1').value,
+        pet_name_1: document.getElementById('employeePetName1').value,
+        pet_type_2: document.getElementById('employeePetType2').value,
+        pet_name_2: document.getElementById('employeePetName2').value,
+        fav_color: document.getElementById('employeeFavColor').value,
+        fav_music: document.getElementById('employeeFavMusic').value,
+        less_fav_music: document.getElementById('employeeLessFavMusic').value,
+    };
+
+    try {
+        const response = await fetch('/api/employees', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newEmployee),
+        });
+
+        if (response.ok) {
+            alert('Reader/Donor added successfully!');
+            hideAddEmployeeForm();
+            const addedEmployee = await response.json();
+            populateEmployeeTable([addedEmployee]);
+        } else {
+            alert('Failed to add Reader/Donor.');
+        }
+    } catch (error) {
+        console.error('Error adding Reader/Donor:', error);
+        alert('An error occurred while adding the Reader/Donor.');
+    }
+};
+
 // Function to handle check-out/return button clicks
 const handleBookStatusChange = async (bookId, currentStatus) => {
     try {
@@ -234,6 +290,13 @@ const handleAddBookSubmit = async (e) => {
     }
 };
 
+//add employee listener
+const setupAddEmployeeEventListeners = () => {
+    document.getElementById('addReaderDonor').addEventListener('click', showAddEmployeeForm);
+    document.getElementById('cancelAddEmployee').addEventListener('click', hideAddEmployeeForm);
+    document.getElementById('addEmployeeForm').addEventListener('submit', handleAddEmployeeSubmit);
+};
+
 // Setup event listeners for adding book
 const setupAddBookEventListeners = () => {
     document.getElementById('addBook').addEventListener('click', showAddBookForm);
@@ -245,6 +308,7 @@ const setupAddBookEventListeners = () => {
 const setupEventListeners = () => {
     setupSearchForm('employeeSearchForm', '/api/employees/search', populateEmployeeTable);
     setupShowAllButton('showAllEmployeesButton', '/api/employees', populateEmployeeTable);
+    setupAddEmployeeEventListeners();
 
     setupSearchForm('bookSearchForm', '/api/books/search', populateBooksTable);
     setupShowAllButton('showAllBooksButton', '/api/books', populateBooksTable);
