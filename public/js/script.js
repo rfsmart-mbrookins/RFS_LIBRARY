@@ -206,15 +206,7 @@ const populateCommentsTable = (comments) => {
     populateTable('commentsData', comments, columns, 'No comments found based on your search criteria.');
 };
 
-const populateCheckoutsTable = (checkouts) => {
-    const columns = createColumnFunctions([
-        checkout => checkout.book_title,
-        checkout => checkout.reader,
-        checkout => formatDate(checkout.checkout_date),
-        checkout => formatDate(checkout.due_date)
-    ]);
-    populateTable('checkoutsData', checkouts, columns, 'No checkouts found based on your search criteria.');
-};
+
 
 // Reusable search form handler
 const setupSearchForm = (formId, apiUrl, populateFn) => {
@@ -315,9 +307,6 @@ const setupEventListeners = () => {
 
     setupSearchForm('commentSearchForm', '/api/comments/search', populateCommentsTable);
     setupShowAllButton('showAllCommentsButton', '/api/comments', populateCommentsTable);
-
-    setupSearchForm('checkoutSearchForm', '/api/checkouts/search', populateCheckoutsTable);
-    setupShowAllButton('showAllCheckouts', '/api/checkouts', populateCheckoutsTable);
 
     setupAddBookEventListeners(); // Add event listeners for the Add Book functionality
 };

@@ -94,7 +94,7 @@ router.patch('/:id/status', async (req, res) => {
 
         // Fetch the updated book to return in the response
         const [updatedBook] = await pool.execute('SELECT * FROM books WHERE id = ?', [id]);
-        res.json(updatedBook[0]); // Return updated book
+        res.json(updatedBook[0]); 
     } catch (error) {
         console.error('Error updating book status:', error);
         res.status(500).json({ error: 'Failed to update the book status.' });
