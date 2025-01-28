@@ -296,7 +296,7 @@ const setupAddBookEventListeners = () => {
     document.getElementById('addBookForm').addEventListener('submit', handleAddBookSubmit);
 };
 
-// Initialize the setup
+// Listeners
 const setupEventListeners = () => {
     setupSearchForm('employeeSearchForm', '/api/employees/search', populateEmployeeTable);
     setupShowAllButton('showAllEmployeesButton', '/api/employees', populateEmployeeTable);
