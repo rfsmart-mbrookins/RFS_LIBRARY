@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RF-SMART Library</title>
-    <link rel="stylesheet" href="css/styles.css"> <!-- External CSS for styling -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -27,10 +27,13 @@
                     <option value="first_name">First Name</option>
                     <option value="last_name">Last Name</option>
                 </select>
-                <input type="text" id="searchValueEmployees" placeholder="Enter search value" aria-label="Enter search value">
+                <input type="text" id="searchValueEmployees" placeholder="Enter search value"
+                    aria-label="Enter search value">
                 <button type="submit" class="search">Search</button>
-                <button type="button" id="showAllEmployeesButton" class="all" aria-label="Show all employees">All Readers/Donors</button>
-                <button type="button" id="addReaderDonor" class="add" aria-label="Add Reader/Donor">Add Reader/Donor</button>
+                <button type="button" id="showAllEmployeesButton" class="all" aria-label="Show all employees">All
+                    Readers/Donors</button>
+                <button type="button" id="addReaderDonor" class="add" aria-label="Add Reader/Donor">Add
+                    Reader/Donor</button>
             </form>
 
             <!-- Employee Data Table -->
@@ -125,7 +128,8 @@
                     <option value="author">Author</option>
                     <option value="genre">Genre</option>
                 </select>
-                <input type="text" id="searchValueBooks" placeholder="Enter search value" aria-label="Enter search value">
+                <input type="text" id="searchValueBooks" placeholder="Enter search value"
+                    aria-label="Enter search value">
                 <button type="submit" class="search">Search</button>
                 <button type="button" id="showAllBooksButton" class="all" aria-label="Show all books">All Books</button>
                 <button type="button" id="addBook" class="add" aria-label="Add book">Add Book</button>
@@ -184,9 +188,11 @@
                     <option value="author">Author</option>
                     <option value="reviewer">Reviewed By</option>
                 </select>
-                <input type="text" id="searchValueComments" placeholder="Enter search value" aria-label="Enter search value">
+                <input type="text" id="searchValueComments" placeholder="Enter search value"
+                    aria-label="Enter search value">
                 <button type="submit" class="search">Search</button>
-                <button type="button" id="showAllCommentsButton" class="all" aria-label="Show all comments">All Comments</button>
+                <button type="button" id="showAllCommentsButton" class="all" aria-label="Show all comments">All
+                    Comments</button>
                 <button type="button" id="addComment" class="add" aria-label="Add Comment">Add Comment</button>
             </form>
 
@@ -202,12 +208,11 @@
                     </tr>
                 </thead>
                 <tbody id="commentsData">
-                    <!-- Data rows populated dynamically -->
                 </tbody>
             </table>
         </section>
 
-        
+
     </main>
 
     <!-- Loading Spinner -->
@@ -215,9 +220,9 @@
         <img src="images/loading.gif" alt="Loading...">
     </div>
 
-    <div id="results"></div> <!-- Results will be shown here -->
+    <div id="results"></div>
 
-    <script src="js/script.js"></script> <!-- External JS file for handling logic -->
+    <script src="js/script.js"></script>
 </body>
 
 </html>

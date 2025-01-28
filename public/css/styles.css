@@ -8,7 +8,8 @@ body {
 }
 
 /* Header Styling */
-h1, h2 {
+h1,
+h2 {
     text-align: center;
     color: #333;
     font-weight: 600;
@@ -132,11 +133,14 @@ table {
     border-radius: 8px;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #ddd;
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     text-align: center;
 }
@@ -187,13 +191,16 @@ tr:nth-child(odd) td {
 
 /* Responsive Design for Small Screens */
 @media (max-width: 768px) {
+
     form input,
     form select,
     form button {
         width: 100%;
     }
 
-    table, th, td {
+    table,
+    th,
+    td {
         font-size: 0.85em;
     }
 

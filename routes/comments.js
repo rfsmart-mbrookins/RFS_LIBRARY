@@ -1,11 +1,11 @@
-import express from 'express'; 
+import express from 'express';
 import pool from '../config/database.js';
 
-const router = express.Router(); 
+const router = express.Router();
 
 // Helper function to sanitize inputs
 const sanitizeInput = (input) => {
-    return input ? `%${input.trim()}%` : '%';  
+    return input ? `%${input.trim()}%` : '%';
 };
 
 // Fetch all comments associated with books and employees
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
             JOIN employees e ON c.employee_id = e.id;
         `;
         const [rows] = await pool.execute(query);
-        res.json(rows);  
+        res.json(rows);
     } catch (error) {
         console.error('Error fetching comments:', error);
         res.status(500).json({ error: 'Failed to fetch comments from the database' });
@@ -30,8 +30,8 @@ router.get('/', async (req, res) => {
 
 // Search comments with filters
 router.get('/search', async (req, res) => {
-    const { title, author, employee_id, reviewer } = req.query; 
-    
+    const { title, author, employee_id, reviewer } = req.query;
+
     if (!title && !author && !employee_id && !reviewer) {
         return res.status(400).json({ error: 'No search criteria provided.' });
     }
@@ -49,15 +49,15 @@ router.get('/search', async (req, res) => {
     const queryParams = [];
 
     if (title) {
-        query += ' AND b.title LIKE ?';  
+        query += ' AND b.title LIKE ?';
         queryParams.push(sanitizeInput(title));
     }
     if (author) {
-        query += ' AND b.author LIKE ?';  
+        query += ' AND b.author LIKE ?';
         queryParams.push(sanitizeInput(author));
     }
     if (reviewer) {
-        query += ' AND (e.first_name LIKE ? OR e.last_name LIKE ?)';  
+        query += ' AND (e.first_name LIKE ? OR e.last_name LIKE ?)';
         const sanitizedReviewer = sanitizeInput(reviewer);
         queryParams.push(sanitizedReviewer, sanitizedReviewer);
     }
@@ -73,7 +73,7 @@ router.get('/search', async (req, res) => {
             return res.status(404).json({ message: 'No comments found matching the criteria.' });
         }
 
-        res.json(rows);  
+        res.json(rows);
     } catch (error) {
         console.error('Error searching comments:', error);
         res.status(500).json({ error: 'Server error' });

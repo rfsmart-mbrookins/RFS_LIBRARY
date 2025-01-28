@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 
 // Search checkouts
 router.get('/search', async (req, res) => {
-    const { title, reader, checkout_date, due_date } = req.query; 
+    const { title, reader, checkout_date, due_date } = req.query;
 
     let query = `
         SELECT c.*, 

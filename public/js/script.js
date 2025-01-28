@@ -1,4 +1,4 @@
-// Utility functions
+// Utility functions - could not get to work when moving to utilities.js file
 const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -70,7 +70,7 @@ const hideAddEmployeeForm = () => {
     document.getElementById('add-employee-section').style.display = 'none';
 };
 
-// Handle Add Reader/Donor form submission
+// Add Reader/Donor form submission
 const handleAddEmployeeSubmit = async (e) => {
     e.preventDefault();
 
@@ -117,7 +117,7 @@ const handleAddEmployeeSubmit = async (e) => {
     }
 };
 
-// Function to handle check-out/return button clicks
+// Check-out/return button clicks
 const handleBookStatusChange = async (bookId, currentStatus) => {
     try {
         const newStatus = currentStatus === 'Available' ? 'Checked Out' : 'Available';
@@ -140,7 +140,7 @@ const handleBookStatusChange = async (bookId, currentStatus) => {
         // Update the row and the button label in the UI
         updateBookRow(updatedBook);
 
-        // Display success message
+        // success message
         const results = document.getElementById('results');
         results.innerHTML = `<p class="success">Book status updated to "${newStatus}"</p>`;
         setTimeout(() => {
@@ -169,7 +169,7 @@ const updateBookRow = (book) => {
     });
 };
 
-// Modify the populateBooksTable to include the button
+// populateBooksTable 
 const populateBooksTable = (books) => {
     const columns = createColumnFunctions([
         (book) => book.id,
@@ -181,12 +181,12 @@ const populateBooksTable = (books) => {
         (book) =>
             `<button data-book-id="${book.id}" data-status="${book.status}">
                 ${book.status === 'Available' ? 'Check Out' : 'Return'}
-            </button>`, // Add Check Out/Return button
+            </button>`,
     ]);
     populateTable('booksData', books, columns, 'No books found based on your search criteria.');
 };
 
-// Listener for dynamically created buttons in the books table
+// Listener for buttons in the books table
 document.getElementById('booksData').addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
         const bookId = e.target.dataset.bookId;
@@ -256,7 +256,7 @@ const handleAddBookSubmit = async (e) => {
         author,
         genre,
         status,
-        notes: notes.trim() || null  // Optional notes
+        notes: notes.trim() || null
     };
 
     try {
@@ -272,7 +272,7 @@ const handleAddBookSubmit = async (e) => {
             alert('Book added successfully!');
             hideAddBookForm();
             const newBookData = await response.json();
-            populateBooksTable([newBookData]); // Add the new book to the table
+            populateBooksTable([newBookData]);
         } else {
             alert('Failed to add book.');
         }
@@ -308,7 +308,7 @@ const setupEventListeners = () => {
     setupSearchForm('commentSearchForm', '/api/comments/search', populateCommentsTable);
     setupShowAllButton('showAllCommentsButton', '/api/comments', populateCommentsTable);
 
-    setupAddBookEventListeners(); // Add event listeners for the Add Book functionality
+    setupAddBookEventListeners();
 };
 
 // Initialize all event listeners

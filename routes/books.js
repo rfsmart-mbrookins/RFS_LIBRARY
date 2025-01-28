@@ -1,5 +1,5 @@
 import express from 'express';
-import pool from '../config/database.js';  
+import pool from '../config/database.js';
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const [rows] = await pool.execute('SELECT * FROM books');
-        res.json(rows);  
+        res.json(rows);
     } catch (error) {
         console.error('Error fetching all books:', error);
         res.status(500).json({ error: 'Failed to fetch books from the database' });
@@ -22,19 +22,19 @@ router.get('/search', async (req, res) => {
         return res.status(400).json({ error: 'No search criteria provided.' });
     }
 
-    let query = 'SELECT * FROM books WHERE 1=1';  
+    let query = 'SELECT * FROM books WHERE 1=1';
     const queryParams = [];
 
     if (title) {
-        query += ' AND title LIKE ?';  
+        query += ' AND title LIKE ?';
         queryParams.push(`%${title.trim()}%`);
     }
     if (author) {
-        query += ' AND author LIKE ?';  
+        query += ' AND author LIKE ?';
         queryParams.push(`%${author.trim()}%`);
     }
     if (genre) {
-        query += ' AND genre LIKE ?';  
+        query += ' AND genre LIKE ?';
         queryParams.push(`%${genre.trim()}%`);
     }
 
@@ -45,7 +45,7 @@ router.get('/search', async (req, res) => {
             return res.status(404).json({ message: 'No books found matching the criteria.' });
         }
 
-        res.json(rows);  
+        res.json(rows);
     } catch (error) {
         console.error('Error searching books:', error);
         res.status(500).json({ error: 'Failed to search books in the database' });
@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
     try {
         // Insert new book into the database
         const [result] = await pool.execute(
-            'INSERT INTO books (title, author, genre, status, notes) VALUES (?, ?, ?, ?, ?)', 
+            'INSERT INTO books (title, author, genre, status, notes) VALUES (?, ?, ?, ?, ?)',
             [title.trim(), author.trim(), genre.trim(), status, notes ? notes.trim() : null]
         );
 
@@ -94,7 +94,7 @@ router.patch('/:id/status', async (req, res) => {
 
         // Fetch the updated book to return in the response
         const [updatedBook] = await pool.execute('SELECT * FROM books WHERE id = ?', [id]);
-        res.json(updatedBook[0]); 
+        res.json(updatedBook[0]);
     } catch (error) {
         console.error('Error updating book status:', error);
         res.status(500).json({ error: 'Failed to update the book status.' });
