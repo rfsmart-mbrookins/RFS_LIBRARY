@@ -1,0 +1,32 @@
+[
+  {
+    "id": 63,
+    "title": "JavaScript for Dummies",
+    "author": "Emily A. Vander Veer",
+    "genre": "Programming",
+    "donor_id": null,
+    "status": "Available",
+    "added_date": "2025-02-04T22:47:19.000Z",
+    "notes": "Learn JavaScript the easy way with JavaScript for Dummies..."
+  },
+  {
+    "id": 62,
+    "title": "JavaScript for Dummies",
+    "author": "Emily A. Vander Veer",
+    "genre": "Programming",
+    "donor_id": null,
+    "status": "Available",
+    "added_date": "2025-02-04T22:46:42.000Z",
+    "notes": "Learn JavaScript the easy way with JavaScript for Dummies..."
+  },
+  {
+    "id": 61,
+    "title": "JavaScript for Dummies",
+    "author": "Emily A. Vander Veer",
+    "genre": "Programming",
+    "donor_id": null,
+    "status": "Available",
+    "added_date": "2025-02-04T22:44:19.000Z",
+    "notes": "Learn JavaScript the easy way with JavaScript for Dummies..."
+  }
+]
