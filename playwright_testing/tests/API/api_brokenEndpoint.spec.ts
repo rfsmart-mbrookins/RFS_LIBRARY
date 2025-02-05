@@ -37,4 +37,5 @@ test.afterAll(() => {
   fs.writeFileSync(artifactPath, JSON.stringify(brokenAPIEndpoints, null, 2));
 
   console.log(`Broken API endpoints saved to ${artifactPath}`);
+  console.log("Broken endpoints:", brokenAPIEndpoints);
 });
