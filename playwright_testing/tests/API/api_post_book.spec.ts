@@ -56,5 +56,5 @@ test.afterAll(() => {
   const artifactPath = path.join(artifactDir, "lastBookAdded.json");
   fs.writeFileSync(artifactPath, JSON.stringify(lastBookAdded, null, 2));
 
-  console.log(`Book added saved to ${artifactPath}`);
+  console.log(`"${lastBookAdded.title}" added saved to ${artifactPath}`);
 });
