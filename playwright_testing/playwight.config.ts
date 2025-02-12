@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests',
   use: {
     baseURL: 'http://localhost:8000', // Change based on your app
-    headless: true,
+    headless: false,
     viewport: { width: 1280, height: 720 },
     trace: 'on-first-retry',
   },

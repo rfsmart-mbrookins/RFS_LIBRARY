@@ -36,7 +36,5 @@ test.describe('Add Book Functionality', () => {
         await bookPage.verifyRequiredFields();
         await expect(bookPage.addBookSection).toBeVisible();
     });
-
-    //Negative Tests
     
 });
