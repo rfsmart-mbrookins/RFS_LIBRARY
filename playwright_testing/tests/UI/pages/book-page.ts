@@ -61,7 +61,7 @@ export class BookPage {
         await this.titleInput.fill(bookData.title);
         await this.authorInput.fill(bookData.author);
         await this.genreInput.fill(bookData.genre);
-        await this.statusSelect.selectOption(bookData.status);  // Changed to selectOption
+        await this.statusSelect.selectOption(bookData.status);  
         if (bookData.notes) {
             await this.notesInput.fill(bookData.notes);
         }
@@ -83,12 +83,12 @@ export class BookPage {
         await this.submitBookForm();
 
         try {
-            // Wait for and handle the success alert
+            // Success alert
             const alertMessage = await this.page.waitForEvent('dialog', { timeout: 5000 });
             await expect(alertMessage.message()).toBe('Book added successfully!');
             await alertMessage.accept();
 
-            // Verify form is hidden after submission
+            // Hide after submission
             await expect(this.addBookSection).toBeHidden();
         } catch (error) {
             throw new Error(`Failed to add book: ${error.message}`);
