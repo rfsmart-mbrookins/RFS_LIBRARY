@@ -29,6 +29,7 @@ export class BookPage {
         this.booksTable = page.locator('#booksData');
     }
 
+    
     async goto() {
         try {
             await this.page.goto(this.baseURL, {
@@ -120,4 +121,6 @@ export class BookPage {
         await expect(this.authorInput).toHaveAttribute('required', '');
         await expect(this.genreInput).toHaveAttribute('required', '');
     }
+
+
 }

@@ -12,11 +12,11 @@ test.describe('Add Book Functionality', () => {
     //Add a new book
     test('Add a new book', async () => {
         const newBook = {
-            title: 'The Test Book v2',
-            author: 'The Author',
-            genre: 'Fiction',
+            title: 'Dad Jokes for The Office',
+            author: 'The Writer Formally Known as Author',
+            genre: 'Comedy',
             status: 'Available',
-            notes: 'Test book notes v2'
+            notes: 'HR Approved'
         };
 
         await bookPage.addBook(newBook);

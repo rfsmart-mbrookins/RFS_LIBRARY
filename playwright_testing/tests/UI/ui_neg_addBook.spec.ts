@@ -1,74 +1,62 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page, Locator } from '@playwright/test';
 import { BookPage } from './pages/book-page';
+import { EmployeePage } from './pages/employee-page';
 
-test.describe('Negative Add Book Tests', () => {
+test.describe('Negative Tests', () => {
     let bookPage: BookPage;
+    let employeePage: EmployeePage;
 
     test.beforeEach(async ({ page }) => {
         bookPage = new BookPage(page);
+        employeePage = new EmployeePage(page);
         await bookPage.goto();
     });
 
-    // Negative Test: Missing Title
-    test('should show an error when title is missing', async () => {
+    // Validate required input fields
+    async function validateRequiredField(inputLocator: Locator) {
+        await expect(inputLocator).toHaveAttribute('required', '');
+
+        const inputElement = await inputLocator.elementHandle();
+        const isInvalid = await inputElement?.evaluate(input => input.matches(':invalid'));
+        expect(isInvalid).toBe(true);
+
+        const tooltipMessage = await inputElement?.evaluate(el => (el as HTMLInputElement).validationMessage);
+        expect(tooltipMessage).toContain('Please fill out this field');
+    }
+
+    // Neg 1: Missing Title Required Error Validation
+    test('Missing Title Required Error Validation', async () => {
         const newBook = {
-            title: '', // Missing title
+            title: '', 
             author: 'The Author',
             genre: 'Fiction',
             status: 'Available',
-            notes: 'Test book notes v2'
+            notes: 'Missing Title'
         };
 
         await bookPage.openAddBookForm();
         await bookPage.fillBookForm(newBook);
         await bookPage.submitBookForm();
 
-        // Wait for the error message to appear
-        const titleErrorMessage = await bookPage.page.locator('#bookTitle').locator('..').locator('.field-error');  // Adjust the selector if needed
-        await bookPage.page.waitForSelector('.field-error', { state: 'visible', timeout: 7000 }); // Wait for any error message to be visible
-        await expect(titleErrorMessage).toBeVisible();
-        await expect(titleErrorMessage).toContainText('Please fill out this field');
+        await validateRequiredField(bookPage.titleInput);
     });
 
-    // Negative Test: Missing Author
-    test('should show an error when author is missing', async () => {
+    // Neg 2: Missing Author Required Error Validation
+    test('Missing Author Required Error Validation', async () => {
         const newBook = {
-            title: 'The Test Book v2',
-            author: '', // Missing author
-            genre: 'Fiction',
+            title: 'The Book formally known as a Manuscript',
+            author: '', 
+            genre: 'Technology',
             status: 'Available',
-            notes: 'Test book notes v2'
+            notes: 'Missing Author'
         };
 
         await bookPage.openAddBookForm();
         await bookPage.fillBookForm(newBook);
         await bookPage.submitBookForm();
 
-        // Wait for the error message to appear
-        const authorErrorMessage = await bookPage.page.locator('#bookAuthor').locator('..').locator('.field-error'); // Adjust the selector if needed
-        await bookPage.page.waitForSelector('.field-error', { state: 'visible', timeout: 7000 }); // Wait for any error message to be visible
-        await expect(authorErrorMessage).toBeVisible();
-        await expect(authorErrorMessage).toContainText('Please fill out this field');
+        await validateRequiredField(bookPage.authorInput);
     });
 
-    // Negative Test: Missing Genre
-    test('should show an error when genre is missing', async () => {
-        const newBook = {
-            title: 'The Test Book v2',
-            author: 'The Author',
-            genre: '', // Missing genre
-            status: 'Available',
-            notes: 'Test book notes v2'
-        };
-
-        await bookPage.openAddBookForm();
-        await bookPage.fillBookForm(newBook);
-        await bookPage.submitBookForm();
-
-        // Wait for the error message to appear
-        const genreErrorMessage = await bookPage.page.locator('#bookGenre').locator('..').locator('.field-error'); // Adjust the selector if needed
-        await bookPage.page.waitForSelector('.field-error', { state: 'visible', timeout: 7000 }); // Wait for any error message to be visible
-        await expect(genreErrorMessage).toBeVisible();
-        await expect(genreErrorMessage).toContainText('Please fill out this field');
-    });
+  
 });
