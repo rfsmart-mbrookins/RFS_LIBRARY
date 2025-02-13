@@ -9,7 +9,6 @@ export class EmployeePage {
     readonly emailInput: Locator;
     readonly jobInput: Locator;
     readonly deptInput: Locator;
-    readonly hireDateInput: Locator;
     readonly submitButton: Locator;
     readonly cancelButton: Locator;
     readonly employeesTable: Locator;
@@ -25,7 +24,6 @@ export class EmployeePage {
         this.emailInput = page.locator('#employeeEmail');
         this.jobInput = page.locator('#employeeJobTitle');
         this.deptInput = page.locator('#employeeDepartment');
-        this.hireDateInput = page.locator('#hireDate');
         this.submitButton = page.locator('#addEmployeeForm button[type="submit"]');
         this.cancelButton = page.locator('#cancelAddEmployee');
         this.employeesTable = page.locator('#employeeData');
@@ -59,14 +57,13 @@ export class EmployeePage {
         email: string;
         jobTitle: string;
         department: string;
-        hireDate: string; // Change to string for consistency
-    }) {
+    })
+     {
         await this.firstNameInput.fill(employeeData.firstName);
         await this.lastNameInput.fill(employeeData.lastName);
         await this.emailInput.fill(employeeData.email);
         await this.jobInput.fill(employeeData.jobTitle);
         await this.deptInput.fill(employeeData.department);
-        await this.hireDateInput.fill(employeeData.hireDate);
     
   
 }
@@ -81,7 +78,6 @@ export class EmployeePage {
         email: string;
         jobTitle: string;
         department: string;
-        hireDate: string;
     }) {
         await this.openAddEmployeeForm();
         await this.fillEmployeeForm(employeeData);
@@ -106,14 +102,13 @@ export class EmployeePage {
         email: string;
         jobTitle: string;
         department: string;
-        hireDate: string;
+     
     }) {
         try {
             const employeeRow = this.employeesTable.locator(`tr:has-text("${employeeData.firstName} ${employeeData.lastName}")`);
             await expect(employeeRow.locator(`td:has-text("${employeeData.email}")`)).toBeVisible();
             await expect(employeeRow.locator(`td:has-text("${employeeData.jobTitle}")`)).toBeVisible();
             await expect(employeeRow.locator(`td:has-text("${employeeData.department}")`)).toBeVisible();
-            await expect(employeeRow.locator(`td:has-text("${employeeData.hireDate}")`)).toBeVisible();
         } catch (error) {
             throw new Error(`Failed to verify employee in table: ${error.message}`);
         }
@@ -125,6 +120,5 @@ export class EmployeePage {
         await expect(this.emailInput).toHaveAttribute('required', '');
         await expect(this.jobInput).toHaveAttribute('required', '');
         await expect(this.deptInput).toHaveAttribute('required', '');
-        await expect(this.hireDateInput).toHaveAttribute('required', '');
     }
 }
