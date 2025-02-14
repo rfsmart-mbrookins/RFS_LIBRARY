@@ -1,4 +1,4 @@
-Scope: 
+Scope:
 To build this application for managing RF-SMART’s "Library" conference room books, we need to approach it with both technical implementation and user needs in mind. Let's break it down into key aspects based on the provided user stories and personas.
 
 Key Features and User Stories

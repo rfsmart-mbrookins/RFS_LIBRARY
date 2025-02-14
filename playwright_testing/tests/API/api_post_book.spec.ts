@@ -23,21 +23,22 @@ test("API POST Request", async ({ request }) => {
       notes: "A book about coffee tables, for coffee table enthusiasts.",
     },
   });
- 
+
   expect(response.status()).toBe(201);
 
- 
   const jsonResponse = await response.json();
 
   // Validate the response
-  expect(jsonResponse).toHaveProperty("title", "The Coffee Table Book of Coffee Tables");
+  expect(jsonResponse).toHaveProperty(
+    "title",
+    "The Coffee Table Book of Coffee Tables"
+  );
   expect(jsonResponse).toHaveProperty("author", "Cosmo Kramer");
   expect(jsonResponse).toHaveProperty("genre", "Comedy");
   expect(jsonResponse).toHaveProperty(
     "notes",
     "A book about coffee tables, for coffee table enthusiasts."
   );
-
 
   lastBookAdded = jsonResponse;
 

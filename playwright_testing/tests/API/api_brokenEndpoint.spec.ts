@@ -25,7 +25,6 @@ test("Broken API Endpoint", async ({ request }) => {
 
 // Save broken endpoints to an artifact
 test.afterAll(() => {
-
   const artifactDir = path.resolve(__dirname, "Artifacts");
 
   // Create the directory if it doesn't exist
